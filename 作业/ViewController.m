@@ -9,10 +9,10 @@
 #import "ViewController.h"
 #import "Masonry.h"
 @interface ViewController ()
-@property (nonatomic, strong) UIView *photoView;
+@property (nonatomic, strong) UIImageView *photoImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIView *timeTipView;
-@property (nonatomic, strong) UILabel *timelabel;
+@property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UIView *purpleView;
 @property (nonatomic, strong) UIView *goodView;
 @property (nonatomic, strong) UILabel *goodNumLabel;
@@ -25,10 +25,10 @@
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view addSubview:self.photoView];
+    [self.view addSubview:self.photoImageView];
     [self.view addSubview:self.nameLabel];
     [self.view addSubview:self.timeTipView];
-    [self.view addSubview:self.timelabel];
+    [self.view addSubview:self.timeLabel];
     [self.view addSubview:self.purpleView];
     [self.view addSubview:self.goodView];
     [self.view addSubview:self.goodNumLabel];
@@ -37,16 +37,19 @@
     [self.view addSubview:self.moreView];
     
     [self setupLayoutWithMasonry];
+    //[self setupLayoutWithVFL];
 }
 
 #pragma mark - setter & getter
--(UIView *)photoView{
-    if (_photoView == nil) {
-        _photoView = [[UIView alloc] init];
-        _photoView.backgroundColor = [UIColor redColor];
-        _photoView.translatesAutoresizingMaskIntoConstraints = NO;
+-(UIView *)photoImageView{
+    if (_photoImageView == nil) {
+        _photoImageView = [[UIImageView alloc] init];
+        _photoImageView.backgroundColor = [UIColor redColor];
+        _photoImageView.layer.cornerRadius = 35/2;
+        _photoImageView.layer.masksToBounds = YES;
+        _photoImageView.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    return _photoView;
+    return _photoImageView;
 }
 -(UILabel *)nameLabel{
     if (_nameLabel == nil) {
@@ -65,14 +68,14 @@
     }
     return _timeTipView;
 }
--(UILabel *)timelabel{
-    if (_timelabel == nil) {
-        _timelabel = [[UILabel alloc] init];
-        _timelabel.text = @"7小时";
-        _timelabel.textColor = [UIColor grayColor];
-        _timelabel.translatesAutoresizingMaskIntoConstraints = NO;
+-(UILabel *)timeLabel{
+    if (_timeLabel == nil) {
+        _timeLabel = [[UILabel alloc] init];
+        _timeLabel.text = @"7小时";
+        _timeLabel.textColor = [UIColor grayColor];
+        _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    return _timelabel;
+    return _timeLabel;
 }
 -(UIView *)purpleView{
     if (_purpleView == nil) {
@@ -125,24 +128,24 @@
 }
 #pragma mark - constraints
 -(void)setupLayoutWithMasonry{
-    [_photoView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_photoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).with.offset(10);
         make.top.equalTo(self.view).with.offset(20);
         make.bottom.equalTo(_purpleView.mas_top).with.offset(-10);
         make.width.equalTo(@35);
-        make.height.equalTo(_photoView.mas_width);
+        make.height.equalTo(_photoImageView.mas_width);
     }];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_photoView);
-        make.left.equalTo(_photoView.mas_right).with.offset(10);
+        make.centerY.equalTo(_photoImageView);
+        make.left.equalTo(_photoImageView.mas_right).with.offset(10);
     }];
-    [_timelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view).with.offset(-10);
-        make.centerY.equalTo(_photoView);
+        make.centerY.equalTo(_photoImageView);
     }];
     [_timeTipView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_timelabel.mas_left).with.offset(-10);
-        make.centerY.equalTo(_photoView);
+        make.right.equalTo(_timeLabel.mas_left).with.offset(-10);
+        make.centerY.equalTo(_photoImageView);
         make.width.equalTo(@10);
         make.height.equalTo(_timeTipView.mas_width);
     }];
@@ -154,7 +157,7 @@
     }];
     [_goodView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_purpleView.mas_bottom).with.offset(10);
-        make.centerX.equalTo(_photoView);
+        make.centerX.equalTo(_photoImageView);
         make.width.equalTo(@20);
         make.height.equalTo(_goodView.mas_width);
     }];
@@ -163,7 +166,7 @@
         make.centerY.equalTo(_goodView);
     }];
     [_grayView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_photoView);
+        make.left.equalTo(_photoImageView);
         make.top.equalTo(_goodView.mas_bottom).with.offset(20);
         make.width.equalTo(@50);
         make.height.equalTo(@25);
@@ -182,4 +185,24 @@
     }];
     
 }
+-(void)setupLayoutWithVFL{
+    NSDictionary *views = NSDictionaryOfVariableBindings(self.view,_photoImageView,_nameLabel,_timeTipView,_timeLabel,_purpleView,_goodView,_goodNumLabel,_grayView,_blueView,_moreView);
+    NSNumber *margin0 = @5;
+    NSNumber *margin1 = @10;
+    NSNumber *margin2 = @20;
+    NSNumber *margin3 = @25;
+    NSDictionary *metrics = NSDictionaryOfVariableBindings(margin0,margin1,margin2,margin3);
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-margin1-[_photoImageView(35)]-margin1-[_nameLabel][_timeTipView(>=10)]-margin1-[_timeLabel]-margin1-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|[_purpleView]|" options:0 metrics:metrics views:views]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"|-margin1-[_goodView(>=20)]-margin1-[_goodNumLabel]" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-margin1-[_grayView(50)]-margin0-[_blueView(60)]-200-[_moreView(40)]-margin1-|" options:NSLayoutFormatAlignAllTop|NSLayoutFormatAlignAllBottom metrics:metrics views:views]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"V:|-margin2-[_photoImageView(>=35)]-margin1-[_purpleView(>=375)]-margin1-[_goodView(>=20)]-margin2-[_grayView(>=25)]" options:0 metrics:metrics views:views]];
+    
+}
+
 @end
