@@ -128,26 +128,58 @@
     [_photoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).with.offset(10);
         make.top.equalTo(self.view).with.offset(20);
-        //make.right.equalTo(_nameLabel.mas_left).with.offset(10);
-        make.bottom.equalTo(_purpleView.mas_top).with.offset(10);
+        make.bottom.equalTo(_purpleView.mas_top).with.offset(-10);
         make.width.equalTo(@35);
-        make.height.equalTo(@35);
+        make.height.equalTo(_photoView.mas_width);
     }];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_photoView);
         make.left.equalTo(_photoView.mas_right).with.offset(10);
     }];
+    [_timelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view).with.offset(-10);
+        make.centerY.equalTo(_photoView);
+    }];
     [_timeTipView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_timelabel.mas_left).with.offset(10);
+        make.right.equalTo(_timelabel.mas_left).with.offset(-10);
         make.centerY.equalTo(_photoView);
         make.width.equalTo(@10);
-        make.height.equalTo(@10);
+        make.height.equalTo(_timeTipView.mas_width);
     }];
-    [_timelabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view).with.offset(10);
-        
-        make.centerY.equalTo(_photoView);
+    [_purpleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).with.offset(0);
+        make.right.equalTo(self.view).with.offset(0);
+        //make.top.equalTo(_photoView.mas_bottom).with.offset(10);
+        make.height.equalTo(_purpleView.mas_width);
     }];
-
+    [_goodView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_purpleView.mas_bottom).with.offset(10);
+        make.centerX.equalTo(_photoView);
+        make.width.equalTo(@20);
+        make.height.equalTo(_goodView.mas_width);
+    }];
+    [_goodNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_goodView.mas_right).with.offset(10);
+        make.centerY.equalTo(_goodView);
+    }];
+    [_grayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_photoView);
+        make.top.equalTo(_goodView.mas_bottom).with.offset(20);
+        make.width.equalTo(@50);
+        make.height.equalTo(@25);
+    }];
+    [_blueView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_grayView.mas_right).with.offset(5);
+        make.centerY.equalTo(_grayView);
+        make.width.equalTo(@60);
+        make.height.equalTo(_grayView);
+    }];
+    [_moreView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view).with.offset(-10);
+        make.centerY.equalTo(_grayView);
+        make.width.equalTo(@40);
+        make.height.equalTo(_grayView);
+    }];
+    
 }
 @end
